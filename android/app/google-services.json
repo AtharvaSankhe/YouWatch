@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "335803562541",
+    "project_id": "youwatchbuddy",
+    "storage_bucket": "youwatchbuddy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335803562541:android:b3d5c7c93fc067f47756a4",
+        "android_client_info": {
+          "package_name": "com.example.youwatchbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "335803562541-78qnnt09tcaa0o1ap1h84hd6phjfu5o3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHhgSUAxbs9ODvXUQDfvVdh3F8-7Tp1lk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "335803562541-78qnnt09tcaa0o1ap1h84hd6phjfu5o3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
