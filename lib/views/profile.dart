@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:youwatchbuddy/controllers/signupController.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -7,14 +8,15 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onTap:(){
-          print(FirebaseAuth.instance.currentUser!.uid.toString());
-        },
-        child: Container(
-          color: Colors.blue,
+      appBar: AppBar(),
+      backgroundColor: Colors.yellow,
+      body: Container(
+        child: TextButton(
+          onPressed: () { SignUpController.instance.logOut(); },
+          child: const Text('SignOut'),
+
         ),
-      ),
+      )
     );
   }
 }

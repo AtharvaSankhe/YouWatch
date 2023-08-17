@@ -30,21 +30,70 @@ class _PostVideoState extends State<PostVideo> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Container(
-        color: Colors.green,
-        child: Column(
-          children: [
-            TextButton(onPressed: () {
-              getVideoFile(ImageSource.gallery);
-            },
-                child: const Text('from gallery')),
-            TextButton(onPressed: () {
-              getVideoFile(ImageSource.camera);
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Container(
+          height: height,
+          width: width,
+          alignment: Alignment.center,
 
-            },
-                child: const Text('shoot from camera')),
-          ],
+          child: Container(
+            height: height*0.66,
+            width: width*0.75,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(50),
+              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+               Container(
+                   height: height*0.25,
+                   width: width*0.55,
+                   decoration: BoxDecoration(
+                     borderRadius: BorderRadius.circular(15),
+                     color: Colors.amberAccent,
+                   ),
+                   child: Image.asset("assets/login/video.gif",height: height*0.75,width: width*0.75,),
+               ),
+                const Text('SELECT VIDEO',style: TextStyle(color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold),),
+                InkWell(
+                  onTap: (){
+                    getVideoFile(ImageSource.gallery);
+                  },
+                  child: Container(
+                    width: width*0.6,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: const Text('Select from Gallery',style: TextStyle(color: Colors.white,fontSize: 18),),
+                  ),
+                ),
+                InkWell(
+                  onTap: (){
+                    getVideoFile(ImageSource.camera);
+                  },
+                  child: Container(
+                    width: width*0.6,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: const Text('Open Camera',style: TextStyle(color: Colors.white,fontSize: 18),),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

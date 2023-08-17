@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:youwatchbuddy/views/home.dart';
 import 'package:youwatchbuddy/views/profile.dart';
-import 'package:youwatchbuddy/views/search.dart';
+import 'package:youwatchbuddy/views/watchvideo.dart';
 import 'package:youwatchbuddy/views/upload.dart';
 
 
@@ -35,11 +35,6 @@ class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-
-      ),
       body: _pages.elementAt(_selectedindex),
       bottomNavigationBar: Container(
         color: Colors.black,
@@ -49,8 +44,8 @@ class _BottomNavState extends State<BottomNav> {
           padding: const EdgeInsets.all(15),
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           backgroundColor: Colors.black,
-          color: Colors.white,
-          activeColor: Colors.white,
+          color: Colors.white60,
+          activeColor: Colors.amberAccent,
           // tabActiveBorder: Border.all(color: Colors.white),
           // tabBorder: Border.all(color: Colors.black),
           tabBackgroundColor: Colors.grey.shade800,

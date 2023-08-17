@@ -40,6 +40,7 @@ dependencies:
   video_player: ^2.7.0
   video_compress: ^3.1.2
   simple_circular_progress_bar: ^1.0.2
+  flutter_spinkit: ^5.2.0
   flutter:
     sdk: flutter
 
