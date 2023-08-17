@@ -73,8 +73,7 @@ class _VideoDetailsState extends State<VideoDetails> {
           children: [
             GestureDetector(
               onTap: (){
-                playerController!.value.isPlaying ? resumePlayer() : stopPlayer() ;
-                setState(() {});
+                playerController!.value.isPlaying ? stopPlayer() : resumePlayer() ;
               },
               child: Container(
                   height: height*0.4,
@@ -84,7 +83,7 @@ class _VideoDetailsState extends State<VideoDetails> {
               ),
             ),
             showProgessbar==true?
-            Container(
+            SizedBox(
               height: height*0.3,
               child:const SimpleCircularProgressBar(
                 progressColors: [

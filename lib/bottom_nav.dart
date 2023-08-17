@@ -26,7 +26,7 @@ class _BottomNavState extends State<BottomNav> {
   }
 
   final List<Widget> _pages = [
-        const Home(),
+        Home(),
         const PostVideo(),
         const Profile(),
         // const Likes(),
