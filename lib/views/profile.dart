@@ -7,16 +7,124 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(),
-      backgroundColor: Colors.yellow,
-      body: Container(
-        child: TextButton(
-          onPressed: () { SignUpController.instance.logOut(); },
-          child: const Text('SignOut'),
+      backgroundColor: Colors.black,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: Colors.black,
+            pinned: true,
+            floating: true,
+            expandedHeight: 160,
+            flexibleSpace: FlexibleSpaceBar(
+                title: const Text(
+                  'YOUR PROFILE',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.amberAccent,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                  ),
+                ),
+                centerTitle: true,
+                background: FadeInImage(
+                  // image: NetworkImage('https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80'),
+                  image: FirebaseAuth.instance.currentUser!.photoURL == null
+                      ? const NetworkImage(
+                          'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80')
+                      : NetworkImage(
+                          FirebaseAuth.instance.currentUser!.photoURL ?? ""),
+                  placeholder: const AssetImage('assets/login/bgLogin.png'),
+                  fit: BoxFit.cover,
+                )),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 30),
+                  height: height*0.20,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                     image: AssetImage('assets/profile/details.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: const Text('USER DETAILS',style: TextStyle(color: Colors.white60,fontSize: 20,fontWeight: FontWeight.w700),),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 30),
+                  height: height*0.20,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                     image:AssetImage('assets/profile/likes.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: const Text('LIKES',style: TextStyle(color: Colors.red,fontSize: 20,fontWeight: FontWeight.w700),),
+                ),Container(
+                  margin: const EdgeInsets.symmetric(vertical: 30),
+                  height: height*0.20,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image:AssetImage('assets/profile/videos.jpg'),
+                        fit: BoxFit.cover
+                    ),
+                  ),
+                  child: const Text('YOUR VIDEOS',style: TextStyle(color: Colors.purpleAccent,fontSize: 20,fontWeight: FontWeight.w700),),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 30),
+                  height: height*0.20,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image:AssetImage('assets/profile/shareapp.jpg'),
+                        fit: BoxFit.cover
+                    ),
+                  ),
+                  child: const Text('SHARE APP',style: TextStyle(color: Colors.blueAccent,fontSize: 20,fontWeight: FontWeight.w700),),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 30),
+                  height: height*0.20,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image:AssetImage('assets/profile/favcreators.jpg'),
+                        fit: BoxFit.cover
+                    ),
+                  ),
+                  child: const Text('FAV CREATORS',style: TextStyle(color: Colors.orangeAccent,fontSize: 20,fontWeight: FontWeight.w700),),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 30),
+                  height: height*0.20,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image:AssetImage('assets/profile/signout.jpg'),
+                        fit: BoxFit.cover
+                    ),
+                  ),
+                  child: const Text('SIGN OUT',style: TextStyle(color: Colors.yellowAccent,fontSize: 20,fontWeight: FontWeight.w700),),
+                ),
 
-        ),
-      )
+              ]
+            ),
+          )
+        ],
+      ),
     );
   }
 }

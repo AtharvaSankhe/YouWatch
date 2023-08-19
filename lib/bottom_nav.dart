@@ -54,7 +54,7 @@ class _BottomNavState extends State<BottomNav> {
           onTabChange: _navigation,
           tabs:const [
             GButton(icon: Icons.home,text: 'Home',),
-            GButton(icon: Icons.search,text: 'Search',),
+            GButton(icon: Icons.post_add,text: 'Upload',),
             GButton(icon: Icons.person,text: 'Profile',),
           ],
         ),
