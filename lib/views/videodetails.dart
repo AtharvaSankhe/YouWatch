@@ -82,7 +82,7 @@ class _VideoDetailsState extends State<VideoDetails> {
                   child: AspectRatio(aspectRatio: playerController!.value.aspectRatio,child: VideoPlayer(playerController!),)
               ),
             ),
-            showProgessbar==true?
+            GlobalController.instance.showProgessbar.isTrue?
             SizedBox(
               height: height*0.3,
               child:const SimpleCircularProgressBar(
@@ -222,7 +222,7 @@ class _VideoDetailsState extends State<VideoDetails> {
                         uploadController.saveVideoInfoToFirebase(titleController.text, descriptionController.text, category, widget.videoPath, context);
                       }
                       setState(() {
-                        showProgessbar = true ;
+                        GlobalController.instance.showProgessbar.value = true ;
                       });
                     },
                     child: Container(

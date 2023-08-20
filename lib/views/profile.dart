@@ -1,6 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:get/get_connect/connect.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:youwatchbuddy/controllers/signupController.dart';
+import 'package:youwatchbuddy/views/profilesection/likes.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -55,18 +60,23 @@ class Profile extends StatelessWidget {
                   ),
                   child: const Text('USER DETAILS',style: TextStyle(color: Colors.white60,fontSize: 20,fontWeight: FontWeight.w700),),
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 30),
-                  height: height*0.20,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                     image:AssetImage('assets/profile/likes.jpg'),
-                      fit: BoxFit.cover,
+                InkWell(
+                  onTap: (){
+                    Get.to(()=>Likes());
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 30),
+                    height: height*0.20,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                       image:AssetImage('assets/profile/likes.jpg'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
+                    child: const Text('LIKES',style: TextStyle(color: Colors.red,fontSize: 20,fontWeight: FontWeight.w700),),
                   ),
-                  child: const Text('LIKES',style: TextStyle(color: Colors.red,fontSize: 20,fontWeight: FontWeight.w700),),
                 ),Container(
                   margin: const EdgeInsets.symmetric(vertical: 30),
                   height: height*0.20,
@@ -80,18 +90,23 @@ class Profile extends StatelessWidget {
                   ),
                   child: const Text('YOUR VIDEOS',style: TextStyle(color: Colors.purpleAccent,fontSize: 20,fontWeight: FontWeight.w700),),
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 30),
-                  height: height*0.20,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image:AssetImage('assets/profile/shareapp.jpg'),
-                        fit: BoxFit.cover
+                InkWell(
+                  onTap: (){
+                    Fluttertoast.showToast(msg: 'Feature yet to be released');
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 30),
+                    height: height*0.20,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image:AssetImage('assets/profile/shareapp.jpg'),
+                          fit: BoxFit.cover
+                      ),
                     ),
+                    child: const Text('SHARE APP',style: TextStyle(color: Colors.blueAccent,fontSize: 20,fontWeight: FontWeight.w700),),
                   ),
-                  child: const Text('SHARE APP',style: TextStyle(color: Colors.blueAccent,fontSize: 20,fontWeight: FontWeight.w700),),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 30),
@@ -106,18 +121,23 @@ class Profile extends StatelessWidget {
                   ),
                   child: const Text('FAV CREATORS',style: TextStyle(color: Colors.orangeAccent,fontSize: 20,fontWeight: FontWeight.w700),),
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 30),
-                  height: height*0.20,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image:AssetImage('assets/profile/signout.jpg'),
-                        fit: BoxFit.cover
+                InkWell(
+                  onTap: (){
+                    SignUpController.instance.logOut();
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 30),
+                    height: height*0.20,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image:AssetImage('assets/profile/signout.jpg'),
+                          fit: BoxFit.cover
+                      ),
                     ),
+                    child: const Text('SIGN OUT',style: TextStyle(color: Colors.yellowAccent,fontSize: 20,fontWeight: FontWeight.w700),),
                   ),
-                  child: const Text('SIGN OUT',style: TextStyle(color: Colors.yellowAccent,fontSize: 20,fontWeight: FontWeight.w700),),
                 ),
 
               ]

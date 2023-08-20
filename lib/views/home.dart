@@ -15,11 +15,6 @@ class Home extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Obx(() {
-        // if (homeController.allVideos.isNotEmpty) {
-        // // if (true) {
-        //   return ;
-        //   //add shimmer effect
-        // }
         return NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverAppBar(
@@ -52,12 +47,47 @@ class Home extends StatelessWidget {
               ),
               floating: true,
             ),
-            // SliverList(
-            //     delegate: SliverChildListDelegate(
-            //       [
-            //         Text('Hello my friend',style: TextStyle(color: Colors.white),),
-            //       ]
-            //     )),
+            SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 7,horizontal: 25),
+                      child: SizedBox(
+                        height: 50,
+                        child: TextField(
+                          cursorColor: Colors.grey.shade800,
+                          onChanged: (value) {
+                            homeController.searchVideo(value.toLowerCase());
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Search',
+                            hintStyle: TextStyle(
+                              color: Colors.grey.shade300,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            suffixIcon: Icon(
+                              Icons.search,
+                              color: Colors.grey.shade300,
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Colors.white38)),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.white38),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Colors.white38)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]
+                )),
           ],
           floatHeaderSlivers: true,
           body: homeController.allVideos.isEmpty
@@ -79,14 +109,14 @@ class Home extends StatelessWidget {
                     itemCount: 5,
                     itemBuilder: (BuildContext context, int index) {
                       return Shimmer.fromColors(
-                        baseColor: Colors.grey.shade500,
+                        baseColor: Colors.grey.shade700,
                         highlightColor: Colors.white,
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           width: double.infinity,
                           height: 200,
                           alignment: Alignment.center,
-                          color: Colors.grey.shade500,
+                          color: Colors.grey.shade700,
                         ),
                       );
                     },

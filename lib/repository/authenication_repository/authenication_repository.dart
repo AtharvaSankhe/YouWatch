@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:youwatchbuddy/bottom_nav.dart';
+import 'package:youwatchbuddy/main.dart';
 import 'package:youwatchbuddy/views/verification/login.dart';
 import 'package:youwatchbuddy/views/home.dart';
 

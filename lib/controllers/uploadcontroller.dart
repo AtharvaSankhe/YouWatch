@@ -88,7 +88,7 @@ class UploadController extends GetxController {
       print('video collection =====================++++++++');
       Get.snackbar("New Video", "firestore done bro");
 
-      showProgessbar = false ;
+      GlobalController.instance.showProgessbar.value = false ;
       print('here is the issue');
       Get.offAll(()=>const BottomNav());
       Get.snackbar("New Video", "Video Successful uploaded");
