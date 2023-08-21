@@ -8,6 +8,9 @@ import 'package:youwatchbuddy/global.dart';
 import 'package:youwatchbuddy/models/videomodel.dart';
 
 class LikeController extends GetxController {
+
+  final int isLikedScreen ;
+  LikeController({required this.isLikedScreen});
   static LikeController get instance => Get.find();
 
   // this is the method to fetch storage data But I have already taken the URL of stored data in the database so no need to use this
@@ -27,12 +30,14 @@ class LikeController extends GetxController {
   RxList<Video> allVideos = <Video>[].obs;
   List<Video> fetchAllVideos = [];
 
+  List collection = [ 'likes' , 'My videos'] ;
+
   Future<void> fetchVideos() async {
     try{
       final querySnapshot = await _firebaseFirestore
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.email.toString())
-          .collection('likes')
+          .collection(collection[isLikedScreen])
           .get();
       List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 

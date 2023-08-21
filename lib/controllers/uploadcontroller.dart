@@ -92,9 +92,24 @@ class UploadController extends GetxController {
       print('here is the issue');
       Get.offAll(()=>const BottomNav());
       Get.snackbar("New Video", "Video Successful uploaded");
+      addVideo(videoObject);
+
     } catch (e) {
       Fluttertoast.showToast(msg: 'Video Upload Unsuccessful');
       debugPrint(e.toString());
+    }
+  }
+
+  Future<void> addVideo(Video video) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.email.toString())
+          .collection('My videos')
+          .doc(video.videoID)
+          .set(video.toJson());
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(msg: e.message.toString());
     }
   }
 

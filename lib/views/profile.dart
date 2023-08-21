@@ -62,7 +62,7 @@ class Profile extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: (){
-                    Get.to(()=>Likes());
+                    Get.to(()=>Likes(isLikedScreen: 0,));
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 30),
@@ -77,18 +77,24 @@ class Profile extends StatelessWidget {
                     ),
                     child: const Text('LIKES',style: TextStyle(color: Colors.red,fontSize: 20,fontWeight: FontWeight.w700),),
                   ),
-                ),Container(
-                  margin: const EdgeInsets.symmetric(vertical: 30),
-                  height: height*0.20,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image:AssetImage('assets/profile/videos.jpg'),
-                        fit: BoxFit.cover
+                ),
+                GestureDetector(
+                  onTap: (){
+                    Get.to(()=>Likes(isLikedScreen: 1,));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 30),
+                    height: height*0.20,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image:AssetImage('assets/profile/videos.jpg'),
+                          fit: BoxFit.cover
+                      ),
                     ),
+                    child: const Text('YOUR VIDEOS',style: TextStyle(color: Colors.purpleAccent,fontSize: 20,fontWeight: FontWeight.w700),),
                   ),
-                  child: const Text('YOUR VIDEOS',style: TextStyle(color: Colors.purpleAccent,fontSize: 20,fontWeight: FontWeight.w700),),
                 ),
                 InkWell(
                   onTap: (){

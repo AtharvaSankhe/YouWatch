@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
-import 'package:youwatchbuddy/controllers/homecontroller.dart';
 import 'package:youwatchbuddy/controllers/watchvideocontroller.dart';
 import 'package:youwatchbuddy/models/videomodel.dart';
 
@@ -22,6 +20,19 @@ class _WatchState extends State<Watch> {
   final WatchVideoController watchVideoController =
       Get.put(WatchVideoController());
 
+  String _videoDuration(Duration duration){
+    String twoDigits(int n)=> n.toString().padLeft(2,'0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return [
+      if (duration.inHours>0)hours,
+      minutes,
+      seconds,
+    ].join(':');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +48,8 @@ class _WatchState extends State<Watch> {
     playerController!.setVolume(2);
     playerController!.setLooping(true);
     watchVideoController.findisLiked(widget.video);
+    watchVideoController.findisDisLiked(widget.video);
+    watchVideoController.findisFav(widget.video.userEmail.toString());
   }
 
   Future<void> stopPlayer() async {
@@ -85,6 +98,47 @@ class _WatchState extends State<Watch> {
                         aspectRatio: playerController!.value.aspectRatio,
                         child: VideoPlayer(playerController!),
                       )),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: ValueListenableBuilder(
+                            valueListenable: playerController!,
+                            builder: (context,VideoPlayerValue value,child){
+                              return Text(
+                                _videoDuration(value.position),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              );
+                            }),
+                      ),
+                      Expanded(
+                        child: SizedBox(
+                          height: 12,
+                          child: VideoProgressIndicator(
+                              playerController!,
+                              allowScrubbing: true,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: ValueListenableBuilder(
+                            valueListenable: playerController!,
+                            builder: (context,VideoPlayerValue value,child){
+                              return Text(
+                                _videoDuration(playerController!.value.duration),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              );
+                            }),
+                      ),
+                    ],
+                  ),
                   const SizedBox(
                     height: 15,
                   ),
@@ -105,27 +159,45 @@ class _WatchState extends State<Watch> {
                         const SizedBox(
                           height: 15,
                         ),
-                        Row(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white60,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Text(
-                                  widget.video.userName ?? "",
-                                  style: const TextStyle(
-                                      color: Colors.black, fontSize: 25),
-                                )),
-                            Column(
+                            Obx(
+                              ()=> InkWell(
+                                onTap: (){
+                                  watchVideoController.isFav.value
+                                      ? watchVideoController
+                                      .removeFav(widget.video)
+                                      : watchVideoController
+                                      .addFav(widget.video);
+                                },
+                                child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 10),
+                                    decoration: BoxDecoration(
+                                      color: watchVideoController.isFav.value?Colors.red:Colors.white60,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        const Icon(Icons.favorite),
+                                        Text(
+                                          widget.video.userName ?? "",
+                                          style: const TextStyle(
+                                              color: Colors.black, fontSize: 25),
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                            const SizedBox(height: 5,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Row(
+                                Column(
                                   children: [
                                     Obx(
-                                    ()=> IconButton(
+                                      () => IconButton(
                                           onPressed: () {
                                             watchVideoController.isLiked.value
                                                 ? watchVideoController
@@ -133,15 +205,17 @@ class _WatchState extends State<Watch> {
                                                 : watchVideoController
                                                     .likeVideo(widget.video);
                                           },
-                                          icon: watchVideoController.isLiked.value
-                                              ? const Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.red,
-                                                )
-                                              : const Icon(
-                                                  Icons.favorite_border_outlined,
-                                                  color: Colors.white,
-                                                )),
+                                          icon:
+                                              watchVideoController.isLiked.value
+                                                  ? const Icon(
+                                                      Icons.thumb_up_alt_sharp,
+                                                      color: Colors.white,
+                                                    )
+                                                  : const Icon(
+                                                      Icons
+                                                          .thumb_up_alt_outlined,
+                                                      color: Colors.white,
+                                                    )),
                                     ),
                                     const Text(
                                       '  Like',
@@ -149,22 +223,66 @@ class _WatchState extends State<Watch> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(
-                                  height: 5,
+                                Column(
+                                  children: [
+                                    Obx(
+                                          () => IconButton(
+                                          onPressed: () {
+                                            watchVideoController.isDisliked.value
+                                                ? watchVideoController
+                                                .undislikeVideo(widget.video)
+                                                : watchVideoController
+                                                .dislikeVideo(widget.video);
+                                          },
+                                          icon:
+                                          watchVideoController.isDisliked.value
+                                              ? Icon(
+                                            Icons.thumb_down,
+                                            color: Colors.grey.shade800,
+                                          )
+                                              : const Icon(
+                                            Icons
+                                                .thumb_down_alt_outlined,
+                                            color: Colors.white,
+                                          )),
+                                    ),
+                                    const Text(
+                                      '  Dislike',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
                                 ),
-                                Row(
+                                Column(
                                   children: [
                                     IconButton(
-                                      onPressed: ()async{
-                                        await Share.share('CheckOut this Video\n${widget.video.videoUrl}');
+                                      onPressed: () async {
+                                        await Share.share(
+                                            'CheckOut this Video\n${widget.video.videoUrl}');
                                       },
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.share,
                                         color: Colors.white,
                                       ),
                                     ),
-                                    Text(
+                                    const Text(
                                       '  Share',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () async {
+
+                                      },
+                                      icon: const Icon(
+                                        Icons.download,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const Text(
+                                      '  Download',
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ],

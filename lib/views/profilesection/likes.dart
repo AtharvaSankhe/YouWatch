@@ -8,12 +8,13 @@ import 'package:youwatchbuddy/global.dart';
 import 'package:youwatchbuddy/views/watchvideo.dart';
 
 class Likes extends StatelessWidget {
-  Likes({Key? key}) : super(key: key);
-
-  final LikeController likeController = Get.put(LikeController());
+  final int isLikedScreen;
+  Likes({Key? key,required this.isLikedScreen}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final LikeController likeController = Get.put(LikeController(isLikedScreen: isLikedScreen));
+    List ifEmpty = [ "You haven't liked any video","You haven't uploaded any video"];
     return Scaffold(
       backgroundColor: Colors.black,
       body: Obx(() {
@@ -125,10 +126,10 @@ class Likes extends StatelessWidget {
             ),
           )
               : likeController.allVideos.isEmpty?
-          const Center(
+          Center(
             child:Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Text("You haven't liked any video",textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 30))),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Text(ifEmpty[isLikedScreen],textAlign: TextAlign.center,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 30))),
           )
               :
           ListView.separated(
