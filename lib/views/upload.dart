@@ -44,8 +44,8 @@ class _PostVideoState extends State<PostVideo> {
             height: height*0.66,
             width: width*0.75,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(50),
+                color: Colors.grey.shade800,
+                borderRadius: BorderRadius.circular(10),
               ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,7 +55,7 @@ class _PostVideoState extends State<PostVideo> {
                    height: height*0.25,
                    width: width*0.55,
                    decoration: BoxDecoration(
-                     borderRadius: BorderRadius.circular(15),
+                     borderRadius: BorderRadius.circular(5),
                      color: Colors.amberAccent,
                    ),
                    child: Image.asset("assets/login/video.gif",height: height*0.75,width: width*0.75,),
@@ -71,7 +71,7 @@ class _PostVideoState extends State<PostVideo> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: Colors.black,
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Text('Select from Gallery',style: TextStyle(color: Colors.white,fontSize: 18),),
                   ),
@@ -86,7 +86,7 @@ class _PostVideoState extends State<PostVideo> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: Colors.black,
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Text('Open Camera',style: TextStyle(color: Colors.white,fontSize: 18),),
                   ),

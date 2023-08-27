@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:youwatchbuddy/controllers/signupController.dart';
+import 'package:youwatchbuddy/views/profilesection/favcreators.dart';
 import 'package:youwatchbuddy/views/profilesection/likes.dart';
+import 'package:youwatchbuddy/views/profilesection/userdetails.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -47,18 +49,23 @@ class Profile extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 30),
-                  height: height*0.20,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                     image: AssetImage('assets/profile/details.jpg'),
-                      fit: BoxFit.cover,
+                InkWell(
+                  onTap: (){
+                    Get.to(()=>const UserDetails());
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 30),
+                    height: height*0.20,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                       image: AssetImage('assets/profile/details.jpg'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
+                    child: const Text('USER DETAILS',style: TextStyle(color: Colors.white60,fontSize: 20,fontWeight: FontWeight.w700),),
                   ),
-                  child: const Text('USER DETAILS',style: TextStyle(color: Colors.white60,fontSize: 20,fontWeight: FontWeight.w700),),
                 ),
                 InkWell(
                   onTap: (){
@@ -114,18 +121,23 @@ class Profile extends StatelessWidget {
                     child: const Text('SHARE APP',style: TextStyle(color: Colors.blueAccent,fontSize: 20,fontWeight: FontWeight.w700),),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 30),
-                  height: height*0.20,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image:AssetImage('assets/profile/favcreators.jpg'),
-                        fit: BoxFit.cover
+                InkWell(
+                  onTap: (){
+                    Get.to(()=>FavCreators());
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 30),
+                    height: height*0.20,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image:AssetImage('assets/profile/favcreators.jpg'),
+                          fit: BoxFit.cover
+                      ),
                     ),
+                    child: const Text('FAV CREATORS',style: TextStyle(color: Colors.orangeAccent,fontSize: 20,fontWeight: FontWeight.w700),),
                   ),
-                  child: const Text('FAV CREATORS',style: TextStyle(color: Colors.orangeAccent,fontSize: 20,fontWeight: FontWeight.w700),),
                 ),
                 InkWell(
                   onTap: (){

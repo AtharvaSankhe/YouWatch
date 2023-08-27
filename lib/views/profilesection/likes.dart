@@ -112,14 +112,15 @@ class Likes extends StatelessWidget {
               itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
                 return Shimmer.fromColors(
-                  baseColor: Colors.grey.shade700,
-                  highlightColor: Colors.white,
+                  baseColor: Colors.grey.shade900,
+                  highlightColor: Colors.grey.shade300,
+                  period: const Duration(milliseconds: 500) ,
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     width: double.infinity,
                     height: 200,
                     alignment: Alignment.center,
-                    color: Colors.grey.shade700,
+                    color: Colors.grey.shade900,
                   ),
                 );
               },

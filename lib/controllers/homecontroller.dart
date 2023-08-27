@@ -46,14 +46,16 @@ class HomeController extends GetxController {
             element.title!.toLowerCase().contains(value.toLowerCase()) ||
             element.userName!.toLowerCase().contains(value.toLowerCase()))
         .toList();
+
     if(allVideos.isEmpty){
       Fluttertoast.showToast(msg: 'No match found');
       allVideos.value = fetchAllVideos;
     }
-
-    if (value.isBlank || allVideos.isEmpty) {
+    if (value.isBlank ) {
       allVideos.value = fetchAllVideos;
     }
+
+
 
   }
 
