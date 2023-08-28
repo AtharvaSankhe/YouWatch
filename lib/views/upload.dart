@@ -58,7 +58,7 @@ class _PostVideoState extends State<PostVideo> {
                      borderRadius: BorderRadius.circular(5),
                      color: Colors.amberAccent,
                    ),
-                   child: Image.asset("assets/login/video.gif",height: height*0.75,width: width*0.75,),
+                   child: Image.asset("assets/gifs/video.gif",height: height*0.75,width: width*0.75,),
                ),
                 const Text('SELECT VIDEO',style: TextStyle(color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold),),
                 InkWell(

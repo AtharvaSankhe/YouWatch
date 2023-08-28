@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:youwatchbuddy/views/chatroom/chatscreen.dart';
 import 'package:youwatchbuddy/views/home.dart';
 import 'package:youwatchbuddy/views/profile.dart';
 import 'package:youwatchbuddy/views/watchvideo.dart';
@@ -28,6 +29,7 @@ class _BottomNavState extends State<BottomNav> {
   final List<Widget> _pages = [
         Home(),
         const PostVideo(),
+        ChatScreen(),
         const Profile(),
         // const Likes(),
   ];
@@ -55,6 +57,7 @@ class _BottomNavState extends State<BottomNav> {
           tabs:const [
             GButton(icon: Icons.home,text: 'Home',),
             GButton(icon: Icons.post_add,text: 'Upload',),
+            GButton(icon: Icons.chat,text: 'Chat',),
             GButton(icon: Icons.person,text: 'Profile',),
           ],
         ),

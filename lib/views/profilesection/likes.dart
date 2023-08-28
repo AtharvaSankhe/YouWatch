@@ -41,9 +41,11 @@ class Likes extends StatelessWidget {
               ],
               leading: IconButton(
                 // onPressed: ()=>Get.to(()=>const Search()),
-                onPressed: () {},
+                onPressed: () {
+                  Get.back();
+                },
                 icon: const Icon(
-                  Icons.search,
+                  Icons.arrow_back_ios,
                   color: Colors.white60,
                   size: 30,
                 ),
@@ -174,7 +176,7 @@ class Likes extends StatelessWidget {
                               ""),
                           height: 200,
                           placeholder: const AssetImage(
-                              'assets/login/bgLogin.png'),
+                              'assets/gifs/loader.gif'),
                           fit: BoxFit.fill,
                         ),
                       ),

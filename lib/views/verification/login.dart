@@ -110,7 +110,7 @@ class _LoginState extends State<Login> {
                     const SizedBox(height: 15,),
                     InkWell(
                       onTap: (){
-
+                        signUpController.googleSignin();
                       },
                       child: Container(
                         height: 55,

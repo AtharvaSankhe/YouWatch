@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:youwatchbuddy/models/profilemodel.dart';
 import 'package:youwatchbuddy/repository/authenication_repository/authenication_repository.dart';
 
 class SignUpController extends GetxController{
@@ -23,6 +24,12 @@ class SignUpController extends GetxController{
   void logOut(){
     AuthenticationRepository.instance.logout();
   }
+
+  void googleSignin(){
+    AuthenticationRepository.instance.signinWithGoogle();
+  }
+
+
 
 
 

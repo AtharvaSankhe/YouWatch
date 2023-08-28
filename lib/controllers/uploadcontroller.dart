@@ -24,6 +24,7 @@ class UploadController extends GetxController {
     return thumbnail;
   }
 
+
   uploadCompressedVideoFileToFirebaseStorage(String videoID,
       String videoFilePath) async {
     UploadTask videoUploadTask = FirebaseStorage.instance.ref().child(
@@ -66,7 +67,7 @@ class UploadController extends GetxController {
       //upload thumbail
       String thumbnailDownloadUrl = await uploadCompressedThumbnailImageToFirebaseStorage(
           videoID, videoFilePath);
-      Get.snackbar("thumbnail",'thambnail');
+      Get.snackbar("thumbnail",'thumbnail');
 
       //save to firestore
       Video videoObject = Video(

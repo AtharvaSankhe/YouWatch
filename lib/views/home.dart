@@ -3,6 +3,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:youwatchbuddy/controllers/homecontroller.dart';
+import 'package:youwatchbuddy/repository/authenication_repository/authenication_repository.dart';
+import 'package:youwatchbuddy/views/profilesection/userdetails.dart';
 import 'package:youwatchbuddy/views/watchvideo.dart';
 
 class Home extends StatelessWidget {
@@ -37,13 +39,27 @@ class Home extends StatelessWidget {
                       size: 30,
                     ))
               ],
-              leading: IconButton(
-                // onPressed: ()=>Get.to(()=>const Search()),
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.search,
-                  color: Colors.white60,
-                  size: 30,
+              leading: GestureDetector(
+                onTap: (){
+                  Get.to(()=>const UserDetails());
+                },
+                child: Container(
+                  height: 10,
+                  width: 10,
+                  padding: const EdgeInsets.all(7),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: AuthenticationRepository.instance.currentUserInfo.value.imagePath==''?
+                        Image.asset('assets/login/loginAvatar.png')
+                        :
+                    FadeInImage(
+                      image: NetworkImage(AuthenticationRepository.instance.currentUserInfo.value.imagePath??
+                          ""),
+                      // height: 200,
+                      placeholder: const AssetImage('assets/login/loginAvatar.png'),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                 ),
               ),
               floating: true,
@@ -63,27 +79,27 @@ class Home extends StatelessWidget {
                           },
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor: Colors.white,
+                            fillColor: Colors.grey.shade800,
                             hintText: 'Search',
-                            hintStyle: TextStyle(
-                              color: Colors.grey.shade300,
-                              fontSize: 14,
+                            hintStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
                               fontWeight: FontWeight.w600,
                             ),
-                            suffixIcon: Icon(
+                            suffixIcon: const Icon(
                               Icons.search,
-                              color: Colors.grey.shade300,
+                              color: Colors.black,
                             ),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(color: Colors.white38)),
+                                borderSide:  BorderSide(color: Colors.grey.shade800)),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.white38),
+                              borderSide:  BorderSide(color: Colors.grey.shade800),
                             ),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(color: Colors.white38)),
+                                borderSide:  BorderSide(color: Colors.grey.shade800)),
                           ),
                         ),
                       ),
@@ -157,16 +173,19 @@ class Home extends StatelessWidget {
                               height: 200,
                               width: double.infinity,
                             ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: FadeInImage(
-                                image: NetworkImage(homeController
-                                        .allVideos[index].thumbnailUrl ??
-                                    ""),
-                                height: 200,
-                                placeholder: const AssetImage(
-                                    'assets/login/bgLogin.png'),
-                                fit: BoxFit.fill,
+                            SizedBox(
+                              height: 200,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: FadeInImage(
+                                  image: NetworkImage(homeController
+                                          .allVideos[index].thumbnailUrl ??
+                                      ""),
+                                  // height: 200,
+                                  placeholder: const AssetImage(
+                                      'assets/gifs/loader.gif',),
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
                             Positioned(

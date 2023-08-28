@@ -19,13 +19,13 @@ class Profile extends StatelessWidget {
       backgroundColor: Colors.black,
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
+          const SliverAppBar(
             backgroundColor: Colors.black,
             pinned: true,
             floating: true,
             expandedHeight: 160,
             flexibleSpace: FlexibleSpaceBar(
-                title: const Text(
+                title: Text(
                   'YOUR PROFILE',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -37,12 +37,15 @@ class Profile extends StatelessWidget {
                 centerTitle: true,
                 background: FadeInImage(
                   // image: NetworkImage('https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80'),
-                  image: FirebaseAuth.instance.currentUser!.photoURL == null
-                      ? const NetworkImage(
-                          'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80')
-                      : NetworkImage(
-                          FirebaseAuth.instance.currentUser!.photoURL ?? ""),
-                  placeholder: const AssetImage('assets/login/bgLogin.png'),
+                  image:
+                  // FirebaseAuth.instance.currentUser!.photoURL == null
+                  //     ?
+                  NetworkImage(
+                          'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80'),
+                  //     :
+                  // NetworkImage(
+                  //         FirebaseAuth.instance.currentUser!.photoURL ?? ""),
+                  placeholder: AssetImage('assets/login/loginAvatar.png'),
                   fit: BoxFit.cover,
                 )),
           ),
