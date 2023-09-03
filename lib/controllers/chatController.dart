@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:youwatchbuddy/models/profilemodel.dart';
+import 'package:youwatchbuddy/repository/authenication_repository/authenication_repository.dart';
 
 class ChatController extends GetxController{
 
@@ -9,6 +10,7 @@ class ChatController extends GetxController{
 
   final _firebaseFirestore  = FirebaseFirestore.instance ;
   RxList<Details> allusers = <Details>[].obs;
+  RxList<Details> recentChats = <Details>[].obs;
 
   @override
   void onInit() {

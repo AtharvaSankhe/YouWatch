@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:youwatchbuddy/models/profilemodel.dart';
 import 'package:youwatchbuddy/repository/authenication_repository/authenication_repository.dart';
 
 class ChatArea extends StatefulWidget {
-  Details chatWith;
+  String name;
+  String email;
+  String imagePath;
 
-  ChatArea({Key? key, required this.chatWith}) : super(key: key);
+  ChatArea({Key? key, required this.name , required this.email , required this.imagePath}) : super(key: key);
 
   @override
   State<ChatArea> createState() => _ChatAreaState();
@@ -15,35 +18,86 @@ class ChatArea extends StatefulWidget {
 
 class _ChatAreaState extends State<ChatArea> {
   final _firebaseFirestore = FirebaseFirestore.instance;
+  final TextEditingController msgController = TextEditingController();
+
+  String lastTime = '';
+  String lastMsg = '';
 
   late String roomId;
 
   String createRoomId() {
-    int codeUnit1 = widget.chatWith.email!.toLowerCase().codeUnits[0];
-    String user2name = AuthenticationRepository.instance.currentUserInfo.value.email!;
-    int codeUnit2 = user2name.toLowerCase().codeUnits[0];
-    // if ( >
-    //         AuthenticationRepository.instance.currentUserInfo.value.email! ??
-    //     "".toLowerCase().codeUnits[0]) {
-    //   return "$";
-    // }
-    if(codeUnit1>codeUnit2){
-      return "${widget.chatWith.email!.toLowerCase()}${user2name}";
-    }else{
-      return "${user2name}${widget.chatWith.email!.toLowerCase()}";
+    String withWho = widget.email!.toLowerCase();
+    String user2name =
+    AuthenticationRepository.instance.currentUserInfo.value.email!;
+    int result = withWho.compareTo(user2name);
+    if (result < 0) {
+      return "${widget.email!.toLowerCase()}$user2name";
+    } else {
+      return "$user2name${widget.email!.toLowerCase()}";
     }
   }
+
+  void sendMessage() async {
+    if (msgController.text.isNotEmpty) {
+      DateTime time = DateTime.now();
+      Map<String, dynamic> messages = {
+        'sendBy': widget.name!,
+        'message': msgController.text,
+        'order': FieldValue.serverTimestamp(),
+        'time': "${time.hour}:${time.minute}",
+      };
+      await _firebaseFirestore
+          .collection('chatroom')
+          .doc(roomId)
+          .collection('chats')
+          .doc(time.toString())
+          .set(messages);
+
+
+      await _firebaseFirestore.collection('users').doc(
+          AuthenticationRepository.instance.currentUserInfo.value.email)
+          .collection('chats').doc(time.toString())
+          .set({
+        'user': widget.name,
+        'imagePath': widget.imagePath,
+        'last msg': msgController.text,
+        'lastMsgTime': FieldValue.serverTimestamp() ,
+        'email':widget.email,
+      });
+      msgController.clear();
+    } else {
+      Fluttertoast.showToast(msg: 'Please enter some text');
+    }
+  }
+
+  // Future<void> createRoom() async{
+  //   Details currentUserinfo = AuthenticationRepository.instance.currentUserInfo.value ;
+  //   await _firebaseFirestore.collection('chatroom').doc(roomId).set({
+  //     'email1': currentUserinfo.email,
+  //     'imagePath1': currentUserinfo.email,
+  //     'name1': currentUserinfo.name,
+  //     'password1': currentUserinfo.password,
+  //     'email2':widget.chatWith.email,
+  //     'imagePath2':widget.chatWith.imagePath,
+  //     'name2':widget.chatWith.name,
+  //     'password2':widget.chatWith.password,
+  //   });
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     roomId = createRoomId();
+    // createRoom();
     debugPrint(roomId);
   }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -56,21 +110,27 @@ class _ChatAreaState extends State<ChatArea> {
               padding: const EdgeInsets.all(0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
-                child: widget.chatWith.imagePath == ''
+                child: widget.imagePath == ''
                     ? Image.asset('assets/login/loginAvatar.png')
                     : FadeInImage(
-                        image: NetworkImage(widget.chatWith.imagePath ?? ""),
-                        // height: 200,
-                        placeholder:
-                            const AssetImage('assets/login/loginAvatar.png'),
-                        fit: BoxFit.fill,
-                      ),
+                  image: NetworkImage(widget.imagePath ?? ""),
+                  // height: 200,
+                  placeholder:
+                  const AssetImage('assets/login/loginAvatar.png'),
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             const SizedBox(
               width: 15,
             ),
-            Text(widget.chatWith.name ?? ""),
+            Text(
+              widget.name ?? "",
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22),
+            ),
           ],
         ),
         leading: IconButton(
@@ -94,9 +154,17 @@ class _ChatAreaState extends State<ChatArea> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Expanded(
+              Expanded(
                 child: TextField(
+                  controller: msgController,
                   cursorColor: Colors.black,
+                  style: const TextStyle(
+                    color: Colors.amber,
+                    fontSize: 17,
+                  ),
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
               Container(
@@ -105,9 +173,9 @@ class _ChatAreaState extends State<ChatArea> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.mic,
-                  color: Colors.grey.shade800,
+                  color: Colors.amber,
                 ),
               ),
               const SizedBox(
@@ -119,23 +187,28 @@ class _ChatAreaState extends State<ChatArea> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.photo_size_select_actual_outlined,
-                  color: Colors.grey.shade800,
+                  color: Colors.amber,
                 ),
               ),
               const SizedBox(
                 width: 5,
               ),
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Icon(
-                  Icons.send,
-                  color: Colors.grey.shade800,
+              GestureDetector(
+                onTap: () {
+                  sendMessage();
+                },
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Icon(
+                    Icons.send,
+                    color: Colors.amber,
+                  ),
                 ),
               )
             ],
@@ -144,16 +217,19 @@ class _ChatAreaState extends State<ChatArea> {
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _firebaseFirestore
-            .collection('chatrooms')
+            .collection('chatroom')
             .doc(roomId)
             .collection('chats')
+            .orderBy("order", descending: false)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.data != null) {
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
-                return Container();
+                Map<String, dynamic> map =
+                snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                return Message(size: size, map: map,);
               },
             );
           } else {
@@ -163,4 +239,86 @@ class _ChatAreaState extends State<ChatArea> {
       ),
     );
   }
+
+// Widget messages(Size size, Map<String, dynamic> map) {
+//   bool seqChecker = false ;
+//   if(lastMsg==map['sendBy']){
+//     seqChecker = true;
+//   }
+//   // seqChecker = seqChecker ;
+//
+//   lastTime = map['time'];
+//   lastMsg = map['sendBy'];
+//   bool isUser = map['sendBy'] ==
+//       AuthenticationRepository.instance.currentUserInfo.value.name;
+//   return Container(
+//     width: size.width,
+//     alignment: isUser ? Alignment.centerLeft : Alignment.centerRight,
+//     child: Container(
+//       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+//       margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+//       decoration: BoxDecoration(
+//         color: isUser ? Colors.grey.shade800 : Colors.amber,
+//         borderRadius: isUser
+//             ? const BorderRadius.only(
+//                 topRight: Radius.circular(30),
+//                 bottomRight: Radius.circular(30),
+//                 bottomLeft: Radius.circular(30))
+//             : const BorderRadius.only(
+//                 topLeft: Radius.circular(30),
+//                 bottomRight: Radius.circular(30),
+//                 bottomLeft: Radius.circular(30)),
+//       ),
+//       child: Text(
+//         map['message'],
+//         style: TextStyle(
+//             color: isUser ? Colors.white : Colors.black, fontSize: 17),
+//       ),
+//     ),
+//   );
+// }
 }
+
+
+class Message extends StatelessWidget {
+  Size size;
+  Map<String, dynamic> map;
+
+  Message({Key? key, required this.size, required this.map}) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    bool isUser = map['sendBy'] ==
+        AuthenticationRepository.instance.currentUserInfo.value.name;
+    return Container(
+      width: size.width,
+      alignment: isUser ? Alignment.centerLeft : Alignment.centerRight,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+        decoration: BoxDecoration(
+          color: isUser ? Colors.grey.shade800 : Colors.amber,
+          borderRadius: isUser
+              ? const BorderRadius.only(
+              topRight: Radius.circular(30),
+              bottomRight: Radius.circular(30),
+              bottomLeft: Radius.circular(30))
+              : const BorderRadius.only(
+              topLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30),
+              bottomLeft: Radius.circular(30)),
+        ),
+        child: Text(
+          map['message'],
+          style: TextStyle(
+              color: isUser ? Colors.white : Colors.black, fontSize: 17),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
