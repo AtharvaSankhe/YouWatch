@@ -46,7 +46,7 @@ class UploadController extends GetxController {
   }
 
   saveVideoInfoToFirebase(String title, String description, String category,
-      String videoFilePath, BuildContext context) async {
+      String videoFilePath,String location, BuildContext context) async {
     try {
       DocumentSnapshot userDocumentSnapshot = await FirebaseFirestore.instance
           .collection('users').doc(
@@ -82,6 +82,7 @@ class UploadController extends GetxController {
         publishedDateTime: DateTime.now().millisecondsSinceEpoch,
         comments: 0,
         likesList: [],
+        // location: location,
       );
 
       Get.snackbar("New Video", "Video to Storage done bro");

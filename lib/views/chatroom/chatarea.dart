@@ -10,7 +10,12 @@ class ChatArea extends StatefulWidget {
   String email;
   String imagePath;
 
-  ChatArea({Key? key, required this.name , required this.email , required this.imagePath}) : super(key: key);
+  ChatArea(
+      {Key? key,
+      required this.name,
+      required this.email,
+      required this.imagePath})
+      : super(key: key);
 
   @override
   State<ChatArea> createState() => _ChatAreaState();
@@ -28,7 +33,7 @@ class _ChatAreaState extends State<ChatArea> {
   String createRoomId() {
     String withWho = widget.email!.toLowerCase();
     String user2name =
-    AuthenticationRepository.instance.currentUserInfo.value.email!;
+        AuthenticationRepository.instance.currentUserInfo.value.email!;
     int result = withWho.compareTo(user2name);
     if (result < 0) {
       return "${widget.email!.toLowerCase()}$user2name";
@@ -39,10 +44,12 @@ class _ChatAreaState extends State<ChatArea> {
 
   void sendMessage() async {
     if (msgController.text.isNotEmpty) {
+      String msg = msgController.text;
+      msgController.clear();
       DateTime time = DateTime.now();
       Map<String, dynamic> messages = {
         'sendBy': widget.name!,
-        'message': msgController.text,
+        'message': msg,
         'order': FieldValue.serverTimestamp(),
         'time': "${time.hour}:${time.minute}",
       };
@@ -53,18 +60,30 @@ class _ChatAreaState extends State<ChatArea> {
           .doc(time.toString())
           .set(messages);
 
-
-      await _firebaseFirestore.collection('users').doc(
-          AuthenticationRepository.instance.currentUserInfo.value.email)
-          .collection('chats').doc(time.toString())
+      await _firebaseFirestore
+          .collection('users')
+          .doc(AuthenticationRepository.instance.currentUserInfo.value.email)
+          .collection('chats')
+          .doc(widget.email)
           .set({
         'user': widget.name,
         'imagePath': widget.imagePath,
-        'last msg': msgController.text,
-        'lastMsgTime': FieldValue.serverTimestamp() ,
-        'email':widget.email,
+        'last msg': msg,
+        'lastMsgTime': FieldValue.serverTimestamp(),
+        'email': widget.email,
       });
-      msgController.clear();
+      await _firebaseFirestore
+          .collection('users')
+          .doc(widget.email)
+          .collection('chats')
+          .doc(AuthenticationRepository.instance.currentUserInfo.value.email)
+          .set({
+        'user': AuthenticationRepository.instance.currentUserInfo.value.name,
+        'imagePath': widget.imagePath,
+        'last msg': msg,
+        'lastMsgTime': FieldValue.serverTimestamp(),
+        'email': widget.email,
+      });
     } else {
       Fluttertoast.showToast(msg: 'Please enter some text');
     }
@@ -95,9 +114,7 @@ class _ChatAreaState extends State<ChatArea> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -113,12 +130,12 @@ class _ChatAreaState extends State<ChatArea> {
                 child: widget.imagePath == ''
                     ? Image.asset('assets/login/loginAvatar.png')
                     : FadeInImage(
-                  image: NetworkImage(widget.imagePath ?? ""),
-                  // height: 200,
-                  placeholder:
-                  const AssetImage('assets/login/loginAvatar.png'),
-                  fit: BoxFit.fill,
-                ),
+                        image: NetworkImage(widget.imagePath ?? ""),
+                        // height: 200,
+                        placeholder:
+                            const AssetImage('assets/login/loginAvatar.png'),
+                        fit: BoxFit.fill,
+                      ),
               ),
             ),
             const SizedBox(
@@ -228,8 +245,11 @@ class _ChatAreaState extends State<ChatArea> {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 Map<String, dynamic> map =
-                snapshot.data!.docs[index].data() as Map<String, dynamic>;
-                return Message(size: size, map: map,);
+                    snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                return Message(
+                  size: size,
+                  map: map,
+                );
               },
             );
           } else {
@@ -279,13 +299,11 @@ class _ChatAreaState extends State<ChatArea> {
 // }
 }
 
-
 class Message extends StatelessWidget {
   Size size;
   Map<String, dynamic> map;
 
   Message({Key? key, required this.size, required this.map}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -301,24 +319,61 @@ class Message extends StatelessWidget {
           color: isUser ? Colors.grey.shade800 : Colors.amber,
           borderRadius: isUser
               ? const BorderRadius.only(
-              topRight: Radius.circular(30),
-              bottomRight: Radius.circular(30),
-              bottomLeft: Radius.circular(30))
+                  topRight: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                  bottomLeft: Radius.circular(30))
               : const BorderRadius.only(
-              topLeft: Radius.circular(30),
-              bottomRight: Radius.circular(30),
-              bottomLeft: Radius.circular(30)),
+                  topLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                  bottomLeft: Radius.circular(30)),
         ),
-        child: Text(
-          map['message'],
-          style: TextStyle(
-              color: isUser ? Colors.white : Colors.black, fontSize: 17),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              map['message'],
+              style: TextStyle(
+                  color: isUser ? Colors.white : Colors.black, fontSize: 17),
+            ),
+            const SizedBox(
+              height: 2,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  map['order']
+                          .toDate()
+                          .toString()
+                          .split(" ")[1]
+                          .toString()
+                          .split(":")[1]
+                          .toString() +':'+
+                      map['order']
+                          .toDate()
+                          .toString()
+                          .split(" ")[1]
+                          .toString()
+                          .split(":")[2]
+                          .toString().split('.')[0].toString() ,
+                  style: TextStyle(
+                      color: isUser ? Colors.white : Colors.black, fontSize: 9),
+                ),
+                // const SizedBox(
+                //   width: 5,
+                // ),
+                // Text(
+                //   'sending',
+                //   style: TextStyle(
+                //       color: isUser ? Colors.white : Colors.black, fontSize: 9),
+                // )
+              ],
+            )
+          ],
         ),
       ),
     );
   }
 }
-
-
-
-
