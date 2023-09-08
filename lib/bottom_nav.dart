@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:youwatchbuddy/repository/authenication_repository/authenication_repository.dart';
 import 'package:youwatchbuddy/views/chatroom/chatscreen.dart';
 import 'package:youwatchbuddy/views/home.dart';
 import 'package:youwatchbuddy/views/profile.dart';
 import 'package:youwatchbuddy/views/watchvideo.dart';
 import 'package:youwatchbuddy/views/upload.dart';
-
 
 import 'main.dart';
 import 'package:flutter/material.dart';
@@ -17,21 +17,45 @@ class BottomNav extends StatefulWidget {
   State<BottomNav> createState() => _BottomNavState();
 }
 
-class _BottomNavState extends State<BottomNav> {
-  int _selectedindex = 0 ;
+class _BottomNavState extends State<BottomNav> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    setStatus("Online");
+  }
 
-  void _navigation(int index){
+  void setStatus(String status) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(AuthenticationRepository.instance.currentUserInfo.value.email)
+        .update({"status": status});
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      setStatus("Online");
+    } else {
+      setStatus("Offline");
+    }
+  }
+
+  int _selectedindex = 0;
+
+  void _navigation(int index) {
     setState(() {
-      _selectedindex = index ;
+      _selectedindex = index;
     });
   }
 
   final List<Widget> _pages = [
-        Home(),
-        const PostVideo(),
-        ChatScreen(),
-        const Profile(),
-        // const Likes(),
+    Home(),
+    const PostVideo(),
+    ChatScreen(),
+    const Profile(),
+    // const Likes(),
   ];
 
   @override
@@ -54,11 +78,23 @@ class _BottomNavState extends State<BottomNav> {
           tabBorderRadius: 25,
           selectedIndex: _selectedindex,
           onTabChange: _navigation,
-          tabs:const [
-            GButton(icon: Icons.home,text: 'Home',),
-            GButton(icon: Icons.post_add,text: 'Upload',),
-            GButton(icon: Icons.chat,text: 'Chat',),
-            GButton(icon: Icons.person,text: 'Profile',),
+          tabs: const [
+            GButton(
+              icon: Icons.home,
+              text: 'Home',
+            ),
+            GButton(
+              icon: Icons.post_add,
+              text: 'Upload',
+            ),
+            GButton(
+              icon: Icons.chat,
+              text: 'Chat',
+            ),
+            GButton(
+              icon: Icons.person,
+              text: 'Profile',
+            ),
           ],
         ),
       ),
@@ -107,4 +143,3 @@ class _BottomNavState extends State<BottomNav> {
 //     );
 //   }
 // }
-

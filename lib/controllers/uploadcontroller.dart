@@ -7,7 +7,8 @@ import 'package:get/get.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:youwatchbuddy/bottom_nav.dart';
 import 'package:youwatchbuddy/global.dart';
-import 'package:youwatchbuddy/models/videoModel.dart';
+import 'package:youwatchbuddy/models/videomodel.dart';
+
 import 'package:youwatchbuddy/views/home.dart';
 
 
@@ -80,9 +81,9 @@ class UploadController extends GetxController {
         videoUrl: videoDownloadUrl,
         thumbnailUrl: thumbnailDownloadUrl,
         publishedDateTime: DateTime.now().millisecondsSinceEpoch,
+        location: location,
         comments: 0,
         likesList: [],
-        // location: location,
       );
 
       Get.snackbar("New Video", "Video to Storage done bro");

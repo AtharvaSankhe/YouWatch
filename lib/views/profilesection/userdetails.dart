@@ -180,12 +180,12 @@ class _UserDetailsState extends State<UserDetails> {
                         onTap: () async{
                           FocusScope.of(context).unfocus();
 
-                          try{
-                            AuthenticationRepository.instance.currentUserInfo!.value.name = nameController.text;
-                            await FirebaseFirestore.instance.collection('users').doc(AuthenticationRepository.instance.currentUserInfo!.value.email).update({'name':nameController.text});
-                          } on FirebaseException catch(e){
-                            Fluttertoast.showToast(msg: 'unable to update name');
-                          }
+                          // try{
+                          //   AuthenticationRepository.instance.currentUserInfo!.value.name = nameController.text;
+                          //   await FirebaseFirestore.instance.collection('users').doc(AuthenticationRepository.instance.currentUserInfo!.value.email).update({'name':nameController.text});
+                          // } on FirebaseException catch(e){
+                          //   Fluttertoast.showToast(msg: 'unable to update name');
+                          // }
                         },
                         child: Container(
                           width: double.infinity,

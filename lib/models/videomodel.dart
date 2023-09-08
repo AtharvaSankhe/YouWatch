@@ -13,7 +13,7 @@ class Video{
   int? publishedDateTime;
   int? comments;
   List? likesList ;
-  // String? location ;
+  String? location ;
 
   Video({
     this.userEmail ,
@@ -27,7 +27,7 @@ class Video{
     this.publishedDateTime,
     this.comments,
     this.likesList ,
-    // this.location
+    this.location,
 });
 
 
@@ -44,7 +44,7 @@ class Video{
       'publishedDateTime': publishedDateTime,
       'comments': comments,
       'likesList': likesList,
-      // 'location': location,
+      'location': location,
     };
   }
 
@@ -62,7 +62,7 @@ class Video{
     publishedDateTime: docSnapshot["publishedDateTime"],
     comments: docSnapshot["comments"],
     likesList: docSnapshot["likesList"],
-    //   location: docSnapshot["location"],
+      location: docSnapshot["location"],
     );
   }
 
